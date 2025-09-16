@@ -2,7 +2,7 @@ name: ym_share
 description: Flutter plugin for sharing content via the platform share UI, using
   the ACTION_SEND intent on Android and UIActivityViewController on iOS.
 homepage: https://github.com/yashmanghnani/ym_share
-version: 0.0.2
+version: 0.0.3
 
 flutter:
   plugin:
