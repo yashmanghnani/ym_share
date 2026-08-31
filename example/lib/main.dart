@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ym_share/share.dart';
+import 'package:ym_share/ym_share.dart';
 
 import 'image_previews.dart';
 
