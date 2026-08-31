@@ -5,7 +5,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// Widget for displaying a preview of images
 class ImagePreviews extends StatelessWidget {
@@ -13,12 +12,11 @@ class ImagePreviews extends StatelessWidget {
   final List<String> imagePaths;
 
   /// Callback when an image should be removed
-  final Function(int)? onDelete;
+  final ValueChanged<int>? onDelete;
 
   /// Creates a widget for preview of images. [imagePaths] can not be empty
   /// and all contained paths need to be non empty.
-  const ImagePreviews(this.imagePaths, {Key? key, this.onDelete})
-      : super(key: key);
+  const ImagePreviews(this.imagePaths, {super.key, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +24,14 @@ class ImagePreviews extends StatelessWidget {
       return Container();
     }
 
-    List<Widget> imageWidgets = [];
+    final List<Widget> imageWidgets = <Widget>[];
     for (int i = 0; i < imagePaths.length; i++) {
-      imageWidgets.add(_ImagePreview(
-        imagePaths[i],
-        onDelete: onDelete != null ? () => onDelete!(i) : null,
-      ));
+      imageWidgets.add(
+        _ImagePreview(
+          imagePaths[i],
+          onDelete: onDelete != null ? () => onDelete!(i) : null,
+        ),
+      );
     }
 
     return SingleChildScrollView(
@@ -45,21 +45,17 @@ class _ImagePreview extends StatelessWidget {
   final String imagePath;
   final VoidCallback? onDelete;
 
-  const _ImagePreview(this.imagePath, {Key? key, this.onDelete})
-      : super(key: key);
+  const _ImagePreview(this.imagePath, {this.onDelete});
 
   @override
   Widget build(BuildContext context) {
-    File imageFile = File(imagePath);
+    final File imageFile = File(imagePath);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
         children: <Widget>[
           ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 200,
-              maxHeight: 200,
-            ),
+            constraints: const BoxConstraints(maxWidth: 200, maxHeight: 200),
             child: Image.file(imageFile),
           ),
           Positioned(
@@ -67,9 +63,10 @@ class _ImagePreview extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  child: Icon(Icons.delete),
-                  onPressed: onDelete),
+                backgroundColor: Colors.red,
+                onPressed: onDelete,
+                child: const Icon(Icons.delete),
+              ),
             ),
           ),
         ],

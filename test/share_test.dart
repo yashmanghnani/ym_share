@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,17 +16,20 @@ void main() {
   setUp(() {
     fakeChannel = FakeMethodChannel();
     // Re-pipe to our fake to verify invocations.
-    Share.channel.setMockMethodCallHandler((MethodCall call) async {
-      // The explicit type can be void as the only method call has a return type of void.
-      await fakeChannel.invokeMethod<void>(call.method, call.arguments);
-    });
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(Share.channel, (MethodCall call) {
+          // The explicit type can be void as the only method call has a return type of void.
+          return fakeChannel.invokeMethod<void>(call.method, call.arguments);
+        });
+  });
+
+  tearDown(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(Share.channel, null);
   });
 
   test('sharing empty fails', () {
-    expect(
-      () => Share.share(''),
-      throwsA(isA<AssertionError>()),
-    );
+    expect(() => Share.share(''), throwsA(isA<ArgumentError>()));
     expect(fakeChannel.invocation, isNull);
   });
 
@@ -48,16 +50,13 @@ void main() {
           'originY': 2.0,
           'originWidth': 3.0,
           'originHeight': 4.0,
-        }
+        },
       }),
     );
   });
 
   test('sharing empty file fails', () {
-    expect(
-      () => Share.shareFiles(['']),
-      throwsA(isA<AssertionError>()),
-    );
+    expect(() => Share.shareFiles(['']), throwsA(isA<ArgumentError>()));
     expect(fakeChannel.invocation, isNull);
   });
 
@@ -75,7 +74,7 @@ void main() {
           'shareFiles': {
             'paths': [path],
             'mimeTypes': ['image/png'],
-          }
+          },
         }),
       );
     } finally {
@@ -97,7 +96,7 @@ void main() {
           'shareFiles': {
             'paths': [file.path],
             'mimeTypes': ['*/*'],
-          }
+          },
         }),
       );
     } finally {
@@ -111,7 +110,7 @@ class FakeMethodChannel extends Fake implements MethodChannel {
 
   @override
   Future<T?> invokeMethod<T>(String method, [dynamic arguments]) async {
-    this.invocation = {method: arguments};
+    invocation = {method: arguments};
     return null;
   }
 }

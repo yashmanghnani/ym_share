@@ -3,8 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show visibleForTesting;
 import 'package:mime/mime.dart' show lookupMimeType;
@@ -13,8 +11,9 @@ import 'package:mime/mime.dart' show lookupMimeType;
 class Share {
   /// [MethodChannel] used to communicate with the platform side.
   @visibleForTesting
-  static const MethodChannel channel =
-      MethodChannel('plugins.flutter.io/share');
+  static const MethodChannel channel = MethodChannel(
+    'plugins.flutter.io/share',
+  );
 
   /// Summons the platform's share sheet to share text.
   ///
@@ -36,8 +35,9 @@ class Share {
     String? subject,
     Rect? sharePositionOrigin,
   }) {
-    assert(text != null);
-    assert(text.isNotEmpty);
+    if (text.isEmpty) {
+      throw ArgumentError.value(text, 'text', 'must not be empty');
+    }
     final Map<String, dynamic> params = <String, dynamic>{
       'text': text,
       'subject': subject,
@@ -72,12 +72,23 @@ class Share {
     String? text,
     Rect? sharePositionOrigin,
   }) {
-    assert(paths != null);
-    assert(paths.isNotEmpty);
-    assert(paths.every((element) => element != null && element.isNotEmpty));
+    if (paths.isEmpty) {
+      throw ArgumentError.value(paths, 'paths', 'must not be empty');
+    }
+    if (paths.any((String path) => path.isEmpty)) {
+      throw ArgumentError.value(paths, 'paths', 'must not contain empty paths');
+    }
+    if (mimeTypes != null && mimeTypes.length != paths.length) {
+      throw ArgumentError.value(
+        mimeTypes,
+        'mimeTypes',
+        'must contain one MIME type for each path',
+      );
+    }
     final Map<String, dynamic> params = <String, dynamic>{
       'paths': paths,
-      'mimeTypes': mimeTypes ??
+      'mimeTypes':
+          mimeTypes ??
           paths.map((String path) => _mimeTypeForPath(path)).toList(),
     };
 
@@ -95,7 +106,6 @@ class Share {
   }
 
   static String _mimeTypeForPath(String path) {
-    assert(path != null);
     return lookupMimeType(path) ?? 'application/octet-stream';
   }
 }
