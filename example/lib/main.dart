@@ -4,6 +4,8 @@
 
 // ignore_for_file: public_member_api_docs
 
+// Keep compatibility with Flutter versions before material_ui was introduced.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ym_share/ym_share.dart';

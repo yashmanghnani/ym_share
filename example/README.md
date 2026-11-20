@@ -1,8 +1,5 @@
-# share_example
+# ym_share example
 
-Demonstrates how to use the share plugin.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.dev/).
+Run `flutter pub get` and `flutter run` on an Android or iOS device or simulator.
+The app demonstrates sharing text and files using the native share sheet.
+See the [package README](../README.md) for requirements and API usage.

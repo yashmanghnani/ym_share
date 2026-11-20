@@ -24,7 +24,7 @@ dependencies:
 Import the library.
 
 ``` dart
-import 'package:ym_share/share.dart';
+import 'package:ym_share/ym_share.dart';
 ```
 
 Then invoke the static `share` method anywhere in your Dart code.
@@ -55,6 +55,9 @@ Share.shareFiles([
 ]);
 ```
 
+The package has been checked with Flutter 3.50.1 and Dart 3.14.
+On iPad, provide `sharePositionOrigin` from the invoking widget to anchor the share sheet.
+
 ## Platform requirements
 
 * Flutter 3.29.3 or newer
@@ -62,7 +65,7 @@ Share.shareFiles([
 * Android API 24 or newer
 * iOS 15 or newer
 
-The Android example uses AGP 9.1, Gradle 9.3.1, and Java 17. The iOS example
+The Android example uses AGP 9.1.1, Gradle 9.7.1, and Java 17. The iOS example
 uses CocoaPods with an iOS 15 deployment target.
 
 ## API

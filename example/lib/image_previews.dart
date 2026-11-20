@@ -4,6 +4,8 @@
 
 import 'dart:io';
 
+// Keep compatibility with Flutter versions before material_ui was introduced.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 
 /// Widget for displaying a preview of images

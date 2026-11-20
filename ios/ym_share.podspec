@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'ym_share'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Share content through the native platform share UI.'
   s.description      = <<-DESC
 A Flutter plugin to share content from your Flutter app via the platform's share dialog.

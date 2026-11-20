@@ -1,3 +1,9 @@
+## 1.0.1
+
+* Checked compatibility with Flutter 3.50.1 and Dart 3.14.
+* Updated Android build tooling to AGP 9.1.1 and Gradle 9.7.1.
+* Corrected the import in the usage example.
+
 
 ## 1.0.0
 
